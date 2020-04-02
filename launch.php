@@ -7,9 +7,11 @@
 	<form name='Newebpay' method='post' action='http://www.pt.com/ebpay.php'>
 		sis_bro_name:<input type='text' name='sis_bro_name' value=''>
 		<br></br>
+		Email:<input type='text' name='Email' value=''></input>
+		<br></br>
 		amount:<input type='text' name='amount' value=''>
 		<br></br>
-		OrderNo:<input type='hidden' name='OrderNo' value='$OrderNo'>
+		<!--OrderNo:--><input type='hidden' name='OrderNo' value='$OrderNo'>
 		<br></br>
 		<input type='submit' value='Submit'>
 	</form>";
