@@ -6,7 +6,7 @@
 	$OrderNo = $_POST["OrderNo"];
 	
 	// 导入配置文件
-	$ini = parse_ini_file("dbconfig.ini");
+	$ini = parse_ini_file("info_config.ini");
 	// 连接mysql
 	$conn = new mysqli($ini["servername"],$ini["username"],$ini["password"],$ini["dbname"]) or die("Connection Failed<br/>");
 	// 存储数据的语法
