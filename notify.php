@@ -17,12 +17,13 @@
 		return $post;
 	}
 	*/
-	$Status = $_POST["Status"];
-	$MerchantID = $_POST["MerchantID"];
+	
+	// 导入配置文件
+	$ini = parse_ini_file("dbconfig.ini");
+	//引用ini参数
+	$mer_key = $ini["mer_key"];
+	$mer_iv = $ini["mer_iv"];
 	$TradeInfo = $_POST["TradeInfo"];
-	$TradeSha = $_POST["TradeSha"];
-	$mer_key = '12345678901234567890123456789012';
-	$mer_iv = '1234567890123456';
 	
 	function create_aes_decrypt($parameter, $mer_key, $mer_iv) {
 		return strippadding(openssl_decrypt(hex2bin($parameter),'AES-256-CBC',$mer_key, OPENSSL_RAW_DATA|OPENSSL_ZERO_PADDING, $mer_iv));
@@ -40,4 +41,22 @@
 		}
 	}
 	
-	$TradeInfoJson =  create_aes_decrypt($TradeInfo, $mer_key, $mer_iv);
+	$TradeInfoArray =  create_aes_decrypt($TradeInfo, $mer_key, $mer_iv);
+	
+	$Status = $_POST["Status"];
+	$MerchantID = $_POST["MerchantID"];
+	$TradeSha = $_POST["TradeSha"];
+	$Amt = $TradeInfoArray["Amt"];
+	$TradeNo = $TradeInfoArray["TradeNo"];
+	$MerchantOrderNo = $TradeInfoArray["MerchantOrderNo"];
+	$EscrowBank = $TradeInfoArray["EscrowBank"];
+	$PayTime = $TradeInfoArray["PayTime"];
+	
+	// 连接mysql
+	$conn = new mysqli($ini["servername"],$ini["username"],$ini["password"],$ini["dbname"]) or die("Connection Failed<br/>");
+	// 存储数据的语法
+	$sql = "UPDATE `donation` SET Status='$Status',TradeNo='$TradeNo',EscrowBank='$EscrowBank',PayTime='$PayTime' WHERE MerchantOrderNo='$MerchantOrderNo';";
+	// 初步存储数据
+	$result = $conn->query($sql);
+	// 关闭连接
+	$conn->close();
