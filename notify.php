@@ -19,7 +19,7 @@
 	*/
 	
 	// 导入配置文件
-	$ini = parse_ini_file("dbconfig.ini");
+	$ini = parse_ini_file("info_config.ini");
 	//引用ini参数
 	$mer_key = $ini["mer_key"];
 	$mer_iv = $ini["mer_iv"];
